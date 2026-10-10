@@ -1,17 +1,17 @@
-# E.D.I.T.H. for Emiliano — Ollama update
+# E.D.I.T.H. — real clock and web sources
 
-Download **[EDITH-Ollama.zip](EDITH-Ollama.zip)**. It extracts into **EDITH-Ollama**, beside your existing EDITH-Emiliano folder. Fresh installations now default to Ollama on your Mac and the qwen2.5:3b model. The Integrations screen has a **Use Ollama on this Mac** button. Local AI needs no cloud API key; keep Ollama running and download the selected model.
+Download **[EDITH-Ollama.zip](EDITH-Ollama.zip)**. It extracts into **EDITH-Ollama**, beside your existing **EDITH-Emiliano** folder.
+
+This update answers time/date questions directly from your Mac's clock in your saved timezone. Web search retrieves actual excerpts with clickable source links and retrieval time. Tavily's public keyless search is enabled by default; it needs internet access and has usage limits. A failed search reports that it could not verify the answer. Your selected Ollama model continues handling ordinary conversation.
 
 ## Update your existing Mac installation
 
-Unzip EDITH-Ollama.zip into Downloads. Stop the running E.D.I.T.H. app and scheduler with Control+C in their terminals. Open Ollama and run in Terminal:
+Unzip EDITH-Ollama.zip into Downloads. Stop the running E.D.I.T.H. app and scheduler with Control+C in their terminals. Keep Ollama running, then run:
 
 ```sh
-ollama pull qwen2.5:3b
 node ~/Downloads/EDITH-Ollama/scripts/update-existing.mjs ~/Downloads/EDITH-Emiliano
 cd ~/Downloads/EDITH-Emiliano
 bash scripts/setup-cloud.sh
-npm run ai:ollama -- qwen2.5:3b
 npm run dev
 ```
 
@@ -22,9 +22,9 @@ cd ~/Downloads/EDITH-Emiliano
 npm run scheduler
 ```
 
-Open http://localhost:3000 in your Mac's browser. Use Integrations → Test model connection.
+Open http://localhost:3000 on your Mac. Try **What time is it?** and **Search the web for the latest NASA news**. Adjust your timezone in Settings if needed. Web replies identify the search provider and provide real source links; they are retrieved excerpts rather than full-page analysis. Check source publication dates for current information.
 
-The updater preserves your existing .env, database, private document storage, password and unrelated files. The ai:ollama command changes only local AI settings and the saved provider choice, fixing older installations that stay in demo or cloud mode. Adjust paths if you installed elsewhere. Keep your existing installation folder; replacing it wholesale does not migrate your data.
+The updater preserves your existing .env, Ollama model/provider choice, database, private document storage, password and unrelated files. Adjust paths if you installed elsewhere. Keep your existing installation folder; replacing it wholesale does not migrate your data. No new API key or model download is needed for this update.
 
 ## Fresh installation
 
@@ -36,16 +36,16 @@ bash scripts/setup-cloud.sh
 npm run dev
 ```
 
-Run `npm run scheduler` in a second Terminal in the same folder. First opening asks you to create a private password of at least 12 characters.
+Run `npm run scheduler` in a second Terminal in the same folder. First opening asks you to create a private password of at least 12 characters. Fresh installations default to Ollama and qwen2.5:3b. Existing installations retain their selected model.
 
-## Voice and cloud alternatives
+## Optional settings
 
-ElevenLabs remains optional and separate. Create your own API key with Text-to-Speech access, copy your selected voice's ID, and put them in .env as ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID. Restart the app and scheduler, then preview the voice. Never paste keys in chat.
+Search sends only the current search query to Tavily, not your prior conversation, private documents or memory. To disable it, set WEB_SEARCH_ENABLED=false in your private .env and restart. WEB_SEARCH_PROVIDER=duckduckgo selects the alternative connector, with Wikipedia fallback for general questions. An optional private TAVILY_API_KEY uses your Tavily account's allowance instead of the limited keyless mode. The included README documents these options; never put keys in chat.
 
-Groq's free developer API remains available, with usage limits. Create your own key at https://console.groq.com/keys, set GROQ_API_KEY in .env, restart both processes, choose Use Groq cloud AI in Integrations, and test it. The included README explains this and other integrations.
+ElevenLabs remains separate: set ELEVENLABS_API_KEY and your selected ELEVENLABS_VOICE_ID privately, restart and preview the voice. Groq remains an optional cloud conversation provider with its own developer account/key and usage limits.
 
-The original EDITH-Emiliano.zip link also contains the updated code and Ollama defaults, under its original folder name. EDITH-Ollama.zip gives the update a distinct folder name.
+The original EDITH-Emiliano.zip link also contains this update under its original folder name. EDITH-Ollama.zip provides a distinct folder name for safe code updates.
 
 ## Validation
 
-33 backend tests and 10 browser tests passed; build, type checking and lint passed in the cloud Linux environment. The upgrade test verifies preservation of existing keys, password, task, database and original document, and repeated Ollama configuration. The browser test uses a mock local HTTP model and exercises provider selection, the connection test and streamed conversation. Real model inference, ElevenLabs speech and native macOS execution require your Mac/provider and have not been claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
+45 backend tests and 11 browser tests passed; production build, type checking and lint passed. Clock tests use actual saved timezones and DST; web transport tests cover actual-link parsing, keyless request headers, limits and failures. Upgrade tests check preservation of keys, password, task, database and original documents. Provider transports are mocked in automated tests. The managed cloud network blocked live Tavily/DuckDuckGo/Wikipedia requests with HTTP 403; live web connectivity must be checked on your Mac. Native macOS execution, real model inference and live ElevenLabs speech are not claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
