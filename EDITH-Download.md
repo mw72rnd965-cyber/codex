@@ -6,6 +6,16 @@ This update adds a dedicated **Core** view with layered rotating rings, radial m
 
 Time/date questions are still answered directly from your Mac's clock in your saved timezone. Web search retrieves actual excerpts with clickable source links and retrieval time. Tavily's public keyless search is enabled by default; it needs internet access and has usage limits. A failed search reports that it could not verify the answer. Your selected Ollama model continues handling ordinary conversation.
 
+## Add missing voice fields only
+
+Download **[EDITH-Voice-Setup.zip](EDITH-Voice-Setup.zip)** and unzip it into Downloads. This small utility needs no package installation. Run:
+
+```sh
+node ~/Downloads/EDITH-Voice-Setup/add-voice-fields.mjs ~/Downloads/EDITH-Emiliano
+```
+
+Use the folder you currently run E.D.I.T.H. from (such as EDITH-Ollama or EDITH-Core) as the last argument if different. It adds blank ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID entries to that folder's private .env, preserves all existing values and does not alter your model or database. Run it again safely; it does not add duplicates. Enter your own values in .env and restart the app and scheduler before using Integrations → Preview selected voice. It does not generate an ElevenLabs key or select a voice for your account.
+
 ## Update your existing Mac installation
 
 Unzip EDITH-Core.zip into Downloads. Stop the running E.D.I.T.H. app and scheduler with Control+C in their terminals. Keep Ollama running, then run:
@@ -26,7 +36,7 @@ npm run scheduler
 
 Open http://localhost:3000 on your Mac. Try **What time is it?** and **Search the web for the latest NASA news**. Adjust your timezone in Settings if needed. Web replies identify the search provider and provide real source links; they are retrieved excerpts rather than full-page analysis. Check source publication dates for current information.
 
-The updater preserves your existing .env, Ollama model/provider choice, database, private document storage, password and unrelated files. Adjust paths if you installed elsewhere. Keep your existing installation folder; replacing it wholesale does not migrate your data. No new API key or model download is needed for this update.
+The updater preserves existing .env values and adds missing blank voice fields. It preserves your Ollama model/provider choice, database, private document storage, password and unrelated files. Adjust paths if you installed elsewhere. Keep your existing installation folder; replacing it wholesale does not migrate your data. No new API key or model download is needed for this update.
 
 ## Fresh installation
 
@@ -50,4 +60,4 @@ The original EDITH-Emiliano.zip and EDITH-Ollama.zip links also contain this upd
 
 ## Validation
 
-45 backend tests and 13 browser tests passed; production build, type checking and lint passed. The browser suite checks actual core request/microphone/error states, rotation, pause/resume, intensity, reduced motion, off-screen suspension and mobile layout. Clock tests use actual saved timezones and DST; web transport tests cover actual-link parsing, keyless request headers, limits and failures. Upgrade tests check preservation of keys, password, task, database and original documents. Provider transports are mocked in automated tests. The managed cloud network blocked live Tavily/DuckDuckGo/Wikipedia requests with HTTP 403; live web connectivity must be checked on your Mac. Native macOS execution, real model inference and live ElevenLabs speech are not claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
+50 backend tests, lint and type checking passed after the voice-field update. The unchanged application build and 13 browser tests passed for the animated-core release. The browser suite checks actual core request/microphone/error states, rotation, pause/resume, intensity, reduced motion, off-screen suspension and mobile layout. Clock tests use actual saved timezones and DST; web transport tests cover actual-link parsing, keyless request headers, limits and failures. Upgrade tests check preservation of keys, password, task, database and original documents. Provider transports are mocked in automated tests. The managed cloud network blocked live Tavily/DuckDuckGo/Wikipedia requests with HTTP 403; live web connectivity must be checked on your Mac. Native macOS execution, real model inference and live ElevenLabs speech are not claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
