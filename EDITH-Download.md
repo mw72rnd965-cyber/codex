@@ -1,15 +1,17 @@
-# E.D.I.T.H. — real clock and web sources
+# E.D.I.T.H. — detailed animated core
 
-Download **[EDITH-Ollama.zip](EDITH-Ollama.zip)**. It extracts into **EDITH-Ollama**, beside your existing **EDITH-Emiliano** folder.
+Download **[EDITH-Core.zip](EDITH-Core.zip)**. It extracts into **EDITH-Core**, beside your existing **EDITH-Emiliano** folder.
 
-This update answers time/date questions directly from your Mac's clock in your saved timezone. Web search retrieves actual excerpts with clickable source links and retrieval time. Tavily's public keyless search is enabled by default; it needs internet access and has usage limits. A failed search reports that it could not verify the answer. Your selected Ollama model continues handling ordinary conversation.
+This update adds a dedicated **Core** view with layered rotating rings, radial markings, orbiting lights, a scan sweep, plasma glow, particles and an animated voice pattern. It follows actual assistant activity, with Ambient/Energized intensity and a pause control. Saved/system reduced-motion preferences are respected; off-screen and hidden-tab animations suspend. Open **Core** in the sidebar or **Open animated core** on Home.
+
+Time/date questions are still answered directly from your Mac's clock in your saved timezone. Web search retrieves actual excerpts with clickable source links and retrieval time. Tavily's public keyless search is enabled by default; it needs internet access and has usage limits. A failed search reports that it could not verify the answer. Your selected Ollama model continues handling ordinary conversation.
 
 ## Update your existing Mac installation
 
-Unzip EDITH-Ollama.zip into Downloads. Stop the running E.D.I.T.H. app and scheduler with Control+C in their terminals. Keep Ollama running, then run:
+Unzip EDITH-Core.zip into Downloads. Stop the running E.D.I.T.H. app and scheduler with Control+C in their terminals. Keep Ollama running, then run:
 
 ```sh
-node ~/Downloads/EDITH-Ollama/scripts/update-existing.mjs ~/Downloads/EDITH-Emiliano
+node ~/Downloads/EDITH-Core/scripts/update-existing.mjs ~/Downloads/EDITH-Emiliano
 cd ~/Downloads/EDITH-Emiliano
 bash scripts/setup-cloud.sh
 npm run dev
@@ -31,7 +33,7 @@ The updater preserves your existing .env, Ollama model/provider choice, database
 Install Node.js **24**, open Ollama and run `ollama pull qwen2.5:3b`. From the new folder:
 
 ```sh
-cd ~/Downloads/EDITH-Ollama
+cd ~/Downloads/EDITH-Core
 bash scripts/setup-cloud.sh
 npm run dev
 ```
@@ -44,8 +46,8 @@ Search sends only the current search query to Tavily, not your prior conversatio
 
 ElevenLabs remains separate: set ELEVENLABS_API_KEY and your selected ELEVENLABS_VOICE_ID privately, restart and preview the voice. Groq remains an optional cloud conversation provider with its own developer account/key and usage limits.
 
-The original EDITH-Emiliano.zip link also contains this update under its original folder name. EDITH-Ollama.zip provides a distinct folder name for safe code updates.
+The original EDITH-Emiliano.zip and EDITH-Ollama.zip links also contain this update under their original folder names. EDITH-Core.zip provides a distinct folder name for safe code updates. If your existing app folder is EDITH-Ollama, use that path as the updater destination and when restarting.
 
 ## Validation
 
-45 backend tests and 11 browser tests passed; production build, type checking and lint passed. Clock tests use actual saved timezones and DST; web transport tests cover actual-link parsing, keyless request headers, limits and failures. Upgrade tests check preservation of keys, password, task, database and original documents. Provider transports are mocked in automated tests. The managed cloud network blocked live Tavily/DuckDuckGo/Wikipedia requests with HTTP 403; live web connectivity must be checked on your Mac. Native macOS execution, real model inference and live ElevenLabs speech are not claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
+45 backend tests and 13 browser tests passed; production build, type checking and lint passed. The browser suite checks actual core request/microphone/error states, rotation, pause/resume, intensity, reduced motion, off-screen suspension and mobile layout. Clock tests use actual saved timezones and DST; web transport tests cover actual-link parsing, keyless request headers, limits and failures. Upgrade tests check preservation of keys, password, task, database and original documents. Provider transports are mocked in automated tests. The managed cloud network blocked live Tavily/DuckDuckGo/Wikipedia requests with HTTP 403; live web connectivity must be checked on your Mac. Native macOS execution, real model inference and live ElevenLabs speech are not claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
