@@ -1,43 +1,51 @@
-# Download E.D.I.T.H. for Emiliano
+# E.D.I.T.H. for Emiliano — Ollama update
 
-Download **EDITH-Emiliano.zip** from this branch using GitHub’s download button. This bundle contains the updated personal assistant source, setup instructions and configuration placeholders. It contains no credentials, personal database, uploaded originals or generated build.
+Download **[EDITH-Ollama.zip](EDITH-Ollama.zip)**. It extracts into **EDITH-Ollama**, beside your existing EDITH-Emiliano folder. Fresh installations now default to Ollama on your Mac and the qwen2.5:3b model. The Integrations screen has a **Use Ollama on this Mac** button. Local AI needs no cloud API key; keep Ollama running and download the selected model.
 
-## Launch on your Mac
+## Update your existing Mac installation
 
-Install Node.js **24**, unzip the archive in Downloads, and run in Terminal:
+Unzip EDITH-Ollama.zip into Downloads. Stop the running E.D.I.T.H. app and scheduler with Control+C in their terminals. Open Ollama and run in Terminal:
 
 ```sh
+ollama pull qwen2.5:3b
+node ~/Downloads/EDITH-Ollama/scripts/update-existing.mjs ~/Downloads/EDITH-Emiliano
 cd ~/Downloads/EDITH-Emiliano
 bash scripts/setup-cloud.sh
+npm run ai:ollama -- qwen2.5:3b
 npm run dev
 ```
 
-Open `http://localhost:3000` on your Mac and create a private password of at least 12 characters.
-
-In a second Terminal window:
+In a second Terminal:
 
 ```sh
 cd ~/Downloads/EDITH-Emiliano
 npm run scheduler
 ```
 
-Keep both terminals running. See the included README and `.env.example` for secure AI, ElevenLabs, telephone, calendar and notification configuration. The backend suite passed 31 tests and the browser suite passed 9 tests in the cloud Linux environment; build, type checking and lint also passed. Automated external-provider tests used mocks. Native macOS execution and live provider operations require the corresponding platform/credentials.
+Open http://localhost:3000 in your Mac's browser. Use Integrations → Test model connection.
 
-## Free cloud AI and voice
+The updater preserves your existing .env, database, private document storage, password and unrelated files. The ai:ollama command changes only local AI settings and the saved provider choice, fixing older installations that stay in demo or cloud mode. Adjust paths if you installed elsewhere. Keep your existing installation folder; replacing it wholesale does not migrate your data.
 
-The update includes a Groq cloud AI preset, setup controls and useful messages for missing keys or usage limits. Groq offers a free developer account with usage limits. Create your own key at https://console.groq.com/keys. In your private `.env` file set `AI_PROVIDER="groq"` and `GROQ_API_KEY` to your key. The preset uses `openai/gpt-oss-20b` by default. Restart both terminals, choose **Use Groq cloud AI** in Integrations, then **Test model connection**.
+## Fresh installation
 
-For ElevenLabs voice, create an API key with Text-to-Speech access and copy the selected voice's ID from your voice library. Put them in `.env` as `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`, restart both processes, then preview the voice. Do not put keys in chat.
+Install Node.js **24**, open Ollama and run `ollama pull qwen2.5:3b`. From the new folder:
 
-**You can use Groq with the earlier download without replacing files.** Edit the existing `.env` entries:
-
-```dotenv
-AI_PROVIDER="openai-compatible"
-AI_BASE_URL="https://api.groq.com/openai/v1"
-AI_MODEL="openai/gpt-oss-20b"
-AI_API_KEY="paste_your_own_groq_key_here"
-ELEVENLABS_API_KEY="paste_your_own_elevenlabs_key_here"
-ELEVENLABS_VOICE_ID="paste_your_selected_voice_id_here"
+```sh
+cd ~/Downloads/EDITH-Ollama
+bash scripts/setup-cloud.sh
+npm run dev
 ```
 
-Restart both processes and test the connection. Keep your existing `.env`, database and `.edith-runtime` when updating source; replacing an entire extracted folder does not migrate personal data. Neither a configuration entry nor the mocked tests prove that your account is connected; verify that with your own key in the app.
+Run `npm run scheduler` in a second Terminal in the same folder. First opening asks you to create a private password of at least 12 characters.
+
+## Voice and cloud alternatives
+
+ElevenLabs remains optional and separate. Create your own API key with Text-to-Speech access, copy your selected voice's ID, and put them in .env as ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID. Restart the app and scheduler, then preview the voice. Never paste keys in chat.
+
+Groq's free developer API remains available, with usage limits. Create your own key at https://console.groq.com/keys, set GROQ_API_KEY in .env, restart both processes, choose Use Groq cloud AI in Integrations, and test it. The included README explains this and other integrations.
+
+The original EDITH-Emiliano.zip link also contains the updated code and Ollama defaults, under its original folder name. EDITH-Ollama.zip gives the update a distinct folder name.
+
+## Validation
+
+33 backend tests and 10 browser tests passed; build, type checking and lint passed in the cloud Linux environment. The upgrade test verifies preservation of existing keys, password, task, database and original document, and repeated Ollama configuration. The browser test uses a mock local HTTP model and exercises provider selection, the connection test and streamed conversation. Real model inference, ElevenLabs speech and native macOS execution require your Mac/provider and have not been claimed as verified. The archives exclude private .env files, databases, uploaded originals, node_modules and generated builds.
