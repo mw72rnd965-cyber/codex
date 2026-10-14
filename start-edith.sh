@@ -102,7 +102,9 @@ export AI_MODEL="$(cat "$EDITH_TEMP/model.txt")"
 
 # Reuse only a running copy that actually uses the selected local model.
 # An older demo copy is left intact; this version uses another free port.
-if [ -f "$EDITH_ROOT/current-port" ]; then
+EDITH_RUNNING_SHA=""
+if [ -f "$EDITH_ROOT/current-app-sha" ]; then EDITH_RUNNING_SHA="$(cat "$EDITH_ROOT/current-app-sha")"; fi
+if [ -f "$EDITH_ROOT/current-port" ] && [ "$EDITH_RUNNING_SHA" = "$EDITH_APP_SHA" ]; then
   EDITH_PREVIOUS_PORT="$(cat "$EDITH_ROOT/current-port")"
   case "$EDITH_PREVIOUS_PORT" in
     ''|*[!0-9]*) ;;
@@ -160,6 +162,7 @@ if [ "$EDITH_READY" != 1 ]; then
   fail "EDITH did not start. The error is shown above."
 fi
 printf '%s\n' "$EDITH_PORT" > "$EDITH_ROOT/current-port"
+printf '%s\n' "$EDITH_APP_SHA" > "$EDITH_ROOT/current-app-sha"
 if ! open "http://127.0.0.1:$EDITH_PORT"; then printf 'Open this in Safari: http://127.0.0.1:%s\n' "$EDITH_PORT"; fi
 printf '\nEDITH is ready. Keep this window open. Press Control-C to stop.\n'
 set +e
